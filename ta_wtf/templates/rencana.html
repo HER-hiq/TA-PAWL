@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rencana</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/sidebar.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  {% include 'sidebar.html' %}
+  
+  <section class="home-section" >
+      <div class="text">Data Kegiatan Rencana</div>
+      <div class="card rounded-3 shadow" style="width: 40rem;margin: auto;">
+        <div class="card-body">
+          <form action="{{url_for('insert_rencana')}}" method="post">
+            <div class="card-body shadow-sm">
+              <div class="input-group" style="margin: auto;">
+                <input type="text" name="aktivitas" class="form-control">
+                <input type="date" name="tanggal" class="form-control">
+                <input type="time" name="waktu" class="form-control">
+                <select name="prioritas" class="form-control">
+                  <option value="high" class="btn btn-danger">High Priority</option>
+                  <option value="middle" class="btn btn-warning">Middle Priority</option>
+                  <option value="low" class="btn btn-success">Low Priority</option>
+                </select>
+                <button type="submit" class="btn btn-primary" style="color: white;"><b>+</b></button>
+              </div>
+            </div>
+              
+          </form>
+    
+        <br><br>
+          <table class="table table-hover" style="margin:auto;">
+            <thead>
+                <tr style="text-align: center;">
+                    <th scope="col">Aktivitas</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Waktu</th>
+                    <th scope="col">Prioritas</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Reminder</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for baris in container %}
+                  <tr>
+                    <td>
+                      <input class="form-check-input" type="checkbox">{{ baris[1] }}
+                    </td>
+                    <td>{{ baris[2] }}</td>
+                    <td>{{ baris[3] }}</td>
+                    <td>
+                      {% if baris[4]=='high' %}
+                        <i class="badge bg-danger">High Priority</i>
+                      {% elif baris[4]=='middle' %}
+                        <i class="badge bg-warning">Middle Priority</i>
+                      {% elif baris[4]=='low' %}
+                        <i class="badge bg-success">Low Priority</i>
+                      {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                      <a href="{{url_for('update', no=baris[0])}}"><i class='bx bx-analyse btn btn-outline-primary'></i></a>
+                      <a href="{{url_for('delete_rencana', no=baris[0])}}"><i class='bx bx-trash btn btn-outline-danger'></i></a>
+                    </td>
+                    <td style="text-align: center;">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="toggleSwitch">
+                        <label class="custom-control-label" for="toggleSwitch" data-on-label="On" data-off-label="Off"></label>
+                     </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+  </section>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
